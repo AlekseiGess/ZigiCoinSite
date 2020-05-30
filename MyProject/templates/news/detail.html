@@ -1,0 +1,38 @@
+{% extends 'news/base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+
+{% block content %}
+		
+<div class="jumbotron">
+	<div class="container">
+		<h1 class="text-left text-black-50 shadow p-3 mb-5 bg-white rounded">
+	   {{ article.title }}</h1>
+		<div  class="text-justify">	
+	<p>{{ article.text|safe }}</p>
+	   {{ article.published|date:"Y-m-d (H:i)" }}
+		</div>
+	</div>
+</div>
+
+	{% for comment in latest_comments_list %}
+	<p>
+		<strong>{{ comment.author }}</strong>
+		<p>{{ comment.comment_text }}</p>
+	</p>
+	{% endfor %}
+
+<div class="container">
+	<form class="needs-validation" action="{% url 'News:add_comment' article.id %}" method="POST">
+			
+		{% csrf_token %}
+		<input class="form-control mb-2 mr-sm-2" type="text" required placeholder="Your Name" name="name"><br>
+		<textarea class="form-control" name="text" required="" placeholder="Comment Text" cols="30" rows="10"></textarea><br>
+		<button class="btn btn-outline-success" type="submit">Add Comment</button>
+	</form>
+</div>
+
+{% endblock %}
+
+
